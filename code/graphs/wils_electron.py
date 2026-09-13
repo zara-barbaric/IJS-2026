@@ -81,7 +81,7 @@ plt.gca().set_prop_cycle(color=colors1)
 for Wils in ["eu", "lequ1", "lequ3"]:
 
     #Poišče mape oblike C_*, kjer je * vrednost Wilsonovega koeficienta. To so mape, ki jih določimo kot output v Madgraph.
-    base_dir = f"{main}/mg5/C_{Wils}/pp_cee" 
+    base_dir = f"{main}/mg5/C_{Wils}/pp_cee/wils" 
     folders = glob.glob(os.path.join(base_dir, "C_*")) 
 
     #Vrednosti Wilsonovih koeficientov, pri katerih smo generirali dogodke
@@ -99,8 +99,8 @@ for Wils in ["eu", "lequ1", "lequ3"]:
     asymetry_values = []
     for c_val, c_str in zip(c_values, c_strings):
         file_sm = f"{main}/mg5/SM/wils_electron/SubProcesses/results.dat"
-        file_c  = f"{main}/mg5/C_{Wils}/pp_cee/C_{c_str}/SubProcesses/results.dat"
-        file_anti_c = f"{main}/mg5/C_{Wils}/pp_c~ee/C_{c_str}/SubProcesses/results.dat"
+        file_c  = f"{main}/mg5/C_{Wils}/pp_cee/wils/C_{c_str}/SubProcesses/results.dat"
+        file_anti_c = f"{main}/mg5/C_{Wils}/pp_c~ee/wils/C_{c_str}/SubProcesses/results.dat"
         asymetry_values.append(asymetry(file_sm, file_c, file_anti_c, c_val))
     asymetry_values = np.array(asymetry_values)
 

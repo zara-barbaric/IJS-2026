@@ -80,7 +80,7 @@ plt.gca().set_prop_cycle(color=colors1)
 for Wils in ["eu", "qe", "lq1", "lq3", "lequ1", "lequ3"]:
 
     #Poišče mape oblike pt_*, kjer je * vrednost gibalen količine. To so mape, ki jih določimo kot output v Madgraph.
-    base_dir = f"{main}/mg5/C_{Wils}/pp_cee/meja"
+    base_dir = f"{main}/mg5/C_{Wils}/pp_cee/meja/pt"
     folders = glob.glob(os.path.join(base_dir, "pt_*"))
 
     #Vrednosti gibalne količine, pri katerih smo generirali dogodke.
@@ -98,8 +98,8 @@ for Wils in ["eu", "qe", "lq1", "lq3", "lequ1", "lequ3"]:
     asymetry_values = []
     for pt_val, pt_str in zip(pt_values, pt_strings):
         file_sm = f"{main}/mg5/SM/pt_electron/pt_{pt_str}/SubProcesses/results.dat"
-        file_c  = f"{main}/mg5/C_{Wils}/pp_cee/meja/pt_{pt_str}/SubProcesses/results.dat"
-        file_anti_c = f"{main}/mg5/C_{Wils}/pp_c~ee/meja/pt_{pt_str}/SubProcesses/results.dat"
+        file_c  = f"{main}/mg5/C_{Wils}/pp_cee/pt/pt_{pt_str}/SubProcesses/results.dat"
+        file_anti_c = f"{main}/mg5/C_{Wils}/pp_c~ee/pt/pt_{pt_str}/SubProcesses/results.dat"
         asymetry_values.append(asymetry(file_sm, file_c, file_anti_c, pt_val))
     asymetry_values = np.array(asymetry_values)
 

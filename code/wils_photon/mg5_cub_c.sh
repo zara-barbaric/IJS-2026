@@ -2,20 +2,20 @@
 wils=uB
 index=79
 
-mkdir -p "/scratch/barbariczara/2026/mg5/C_${wils}/pp_ca/pt"
+mkdir -p "/scratch/barbariczara/2026/mg5/C_${wils}/pp_ca/wils"
 
 for C in $(seq 0 0.5 20); do
 	if [ "$C" = "0.0" ]; then
 	        C=0.01
 	fi
-	if [[ -d "/scratch/barbariczara/2026/mg5/C_${wils}/pp_ca/pt/C_${C}" ]]; then
-		rm -r "/scratch/barbariczara/2026/mg5/C_${wils}/pp_ca/pt/C_${C}"
+	if [[ -d "/scratch/barbariczara/2026/mg5/C_${wils}/pp_ca/wils/C_${C}" ]]; then
+		rm -r "/scratch/barbariczara/2026/mg5/C_${wils}/pp_ca/wils/C_${C}"
 	fi
 	
 /home/barbariczara/python3/bin/python3.7 /home/barbariczara/tools/mg5_amc/bin/mg5_aMC <<EOF
 import model SMEFTsim_general_MwScheme_UFO
 generate p p > c a NP==1
-output /scratch/barbariczara/2026/mg5/C_{wils}/pp_ca/pt/C_${C}     
+output /scratch/barbariczara/2026/mg5/C_{wils}/pp_ca/wils/C_${C}     
 launch
 0
 set run_card ptamax 40
