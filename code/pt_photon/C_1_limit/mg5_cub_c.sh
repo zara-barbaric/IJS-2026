@@ -1,23 +1,22 @@
 #!/bin/bash
 wils="uB"
 index=79
-c=1
+C=1
 
-mkdir -p /scratch/barbariczara/2026/mg5/C_${wils}/pp_c~a/meja_limit/C_${c}
+mkdir -p "/scratch/barbariczara/2026/mg5/C_${wils}/pp_ca/pt_photon/C_${C}_limit"
 
-for pt in $(seq 5 5 500); do
-	if [[ -d "/scratch/barbariczara/2026/mg5/C_${wils}/pp_ca/meja_limit/C_${c}/pt_${pt}" ]]; then
-		rm -r /scratch/barbariczara/2026/mg5/C_${wils}/pp_ca/meja_limit/C_${c}/pt_${pt}
+for pt in $(seq 20 5 500); do
+	if [[ -d "/scratch/barbariczara/2026/mg5/C_${wils}/pp_ca/pt_photon/C_${C}_limit/pt_${pt}" ]]; then
+		rm -r "/scratch/barbariczara/2026/mg5/C_${wils}/pp_ca/pt_photon/C_${C}_limit/pt_${pt}"
 	fi
 /home/barbariczara/python3/bin/python3.7 /home/barbariczara/tools/mg5_amc/bin/mg5_aMC <<EOF
 import model SMEFTsim_general_MwScheme_UFO
 generate p p > c a NP==1
-output /scratch/barbariczara/2026/mg5/C_${wils}/pp_ca/meja_limit/C_${c}/pt_${pt}     
+output /scratch/barbariczara/2026/mg5/C_${wils}/pp_ca/pt_photon/C_${C}_limit/pt_${pt}     
 launch
 0
-set param_card smeft ${index} ${c}
+set param_card smeft ${index} ${C}
 set run_card ptj ${pt} 
-set run_card ptamax 600     
+set run_card ptamax 600      
 EOF
-
 done
