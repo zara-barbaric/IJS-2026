@@ -1,13 +1,13 @@
 #!/usr/bin/bash
-#SBATCH --job-name=C_uB_c~a_1
+#SBATCH --job-name=C_ub_c~a_1
 #SBATCH --partition=short
-#SBATCH --time=2:00:00
+#SBATCH --time=4:00:00
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
 #SBATCH --mem=16G
 #SBATCH --qos=student
-#SBATCH --output=/home/barbariczara/2026/output/pt_photon/C_1/C_uB_c~a.out
+#SBATCH --output=/home/barbariczara/2026/output/pt_photon/C_1/C_ub_c~a.out
 
 module load GCC/7.3.0
 module load GCCcore/7.3.0
