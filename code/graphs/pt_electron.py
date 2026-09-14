@@ -80,7 +80,7 @@ plt.gca().set_prop_cycle(color=colors1)
 for Wils in ["eu", "qe", "lq1", "lq3", "lequ1", "lequ3"]:
 
     #Poišče mape oblike pt_*, kjer je * vrednost gibalen količine. To so mape, ki jih določimo kot output v Madgraph.
-    base_dir = f"{main}/mg5/C_{Wils}/pp_cee/meja/pt"
+    base_dir = f"{main}/mg5/C_{Wils}/pp_cee/pt"
     folders = glob.glob(os.path.join(base_dir, "pt_*"))
 
     #Vrednosti gibalne količine, pri katerih smo generirali dogodke.
