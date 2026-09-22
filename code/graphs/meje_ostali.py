@@ -84,7 +84,7 @@ def asymetry(file_sm, file_c, file_anti_c, c):
 
 
 #Za Wilsonov koeficient C_lequ1 izračuna asimetrijo in nariše graf
-Wils = "lequ1"
+Wils = "eu"
 
 #Poišče mape oblike C_*, kjer je * vrednost Wilsonovega koeficienta. To so mape, ki jih določimo kot output v Madgraph.
 base_dir = f"{main}/mg5/C_{Wils}/pp_cee/wils" 
