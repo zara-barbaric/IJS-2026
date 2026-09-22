@@ -16,7 +16,7 @@ for C in $(seq 0 0.5 20); do
 /home/barbariczara/python3/bin/python3.7 /home/barbariczara/tools/mg5_amc/bin/mg5_aMC <<EOF
 import model SMEFTsim_general_MwScheme_UFO
 generate p p > c a NP==1
-output ${main}/mg5/C_{wils}/pp_ca/wils/C_${C}     
+output ${main}/mg5/C_${wils}/pp_ca/wils/C_${C}     
 launch
 0
 set run_card ptamax 40

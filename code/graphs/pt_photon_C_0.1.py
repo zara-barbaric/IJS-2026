@@ -103,7 +103,7 @@ for Wils in ["uW", "uB"]:
         file_sm = f"{main}/mg5/SM/pt_photon/pt_{pt_str}/SubProcesses/results.dat"
         file_c  = f"{main}/mg5/C_{Wils}/pp_ca/pt/C_{C}/pt_{pt_str}/SubProcesses/results.dat"
         file_c_ = f"{main}/mg5/C_{Wils}/pp_c~a/pt/C_{C}/pt_{pt_str}/SubProcesses/results.dat"
-        asymetry_values.append(asymetry(file_sm, file_c, file_c_, pt_val))
+        asymetry_values.append(asymetry(file_sm, file_c, file_c_, C))
     asymetry_values = np.array(asymetry_values)
 
     label = rf"$C_{{{Wils}}}$"

@@ -25,6 +25,16 @@ plt.rcParams.update({
     "savefig.bbox": "tight",
 })
 
+c_values = {
+    "eu": 0.0539771,
+    "lu": 0.0540114,
+    "qe": 0.0423928,
+    "lq1": 0.0503483,
+    "lq3": 0.0265658,
+    "lequ1": 0.0562678,
+    "lequ3": 0.0270081
+}
+
 def sigma(filename):
     """
     Poišče datoteko z rezultati programa Madgraph in vrne sipalni presek (prvo število).
@@ -77,8 +87,8 @@ def asymetry(file_sm, file_c, file_anti_c, c):
 
 #Za vsak Wilsonov koeficient izračuna asimetrijo in nariše graf
 plt.gca().set_prop_cycle(color=colors1)
-for Wils in ["eu", "qe", "lq1", "lq3", "lequ1", "lequ3"]:
-
+for Wils in ["eu", "lu", "qe", "lq1", "lq3", "lequ1", "lequ3"]:
+    c_val = c_values[Wils]
     #Poišče mape oblike pt_*, kjer je * vrednost gibalen količine. To so mape, ki jih določimo kot output v Madgraph.
     base_dir = f"{main}/mg5/C_{Wils}/pp_cee/pt"
     folders = glob.glob(os.path.join(base_dir, "pt_*"))
@@ -100,16 +110,16 @@ for Wils in ["eu", "qe", "lq1", "lq3", "lequ1", "lequ3"]:
         file_sm = f"{main}/mg5/SM/pt_electron/pt_{pt_str}/SubProcesses/results.dat"
         file_c  = f"{main}/mg5/C_{Wils}/pp_cee/pt/pt_{pt_str}/SubProcesses/results.dat"
         file_anti_c = f"{main}/mg5/C_{Wils}/pp_c~ee/pt/pt_{pt_str}/SubProcesses/results.dat"
-        asymetry_values.append(asymetry(file_sm, file_c, file_anti_c, pt_val))
+        asymetry_values.append(asymetry(file_sm, file_c, file_anti_c, c_val))
     asymetry_values = np.array(asymetry_values)
 
     if "1" in Wils:
         label = rf"$C_{{{Wils[:-1]}}}^{{(1)}}$"
     elif "3" in Wils:
         label = rf"$C_{{{Wils[:-1]}}}^{{(3)}}$"
-    elif Wils == "eu":
-        #Za C_lu in C_eu dobimo isti graf
-        label = r"$C_{eu}$, $C_{lu}$"
+    # elif Wils == "eu":
+    #     #Za C_lu in C_eu dobimo isti graf
+    #     label = r"$C_{eu}$, $C_{lu}$"
     else:
         label = rf"$C_{{{Wils}}}$"
 
