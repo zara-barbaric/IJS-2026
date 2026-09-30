@@ -1,0 +1,21 @@
+#!/usr/bin/bash
+#SBATCH --job-name=pt_photon/C_uw_ca_1
+#SBATCH --partition=short
+#SBATCH --time=2:00:00
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --mem=16G
+#SBATCH --qos=student
+#SBATCH --output=/home/barbariczara/2026/output_complete/pt_photon/C_1/C_uw_ca.out
+
+module load GCC/7.3.0
+module load GCCcore/7.3.0
+
+source /home/barbariczara/root/root_install/bin/thisroot.sh
+source ~/.bashrc
+
+#Commands:
+echo "Start: $(date)"
+bash ~/2026/code_complete/pt_photon/C_1/mg5_cuw_c.sh
+echo "End: $(date)"

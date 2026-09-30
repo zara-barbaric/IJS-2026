@@ -1,0 +1,175 @@
+#************************************************************
+#*                     MadGraph5_aMC@NLO                    *
+#*                                                          *
+#*                *                       *                 *
+#*                  *        * *        *                   *
+#*                    * * * * 5 * * * *                     *
+#*                  *        * *        *                   *
+#*                *                       *                 *
+#*                                                          *
+#*                                                          *
+#*         VERSION 3.6.3                 2025-06-12         *
+#*                                                          *
+#*    The MadGraph5_aMC@NLO Development Team - Find us at   *
+#*    https://server06.fynu.ucl.ac.be/projects/madgraph     *
+#*                                                          *
+#************************************************************
+#*                                                          *
+#*               Command File for MadGraph5_aMC@NLO         *
+#*                                                          *
+#*     run as ./bin/mg5_aMC  filename                       *
+#*                                                          *
+#************************************************************
+set group_subprocesses Auto
+set ignore_six_quark_processes False
+set low_mem_multicore_nlo_generation False
+set complex_mass_scheme False
+set include_lepton_initiated_processes False
+set gauge unitary
+set loop_optimized_output True
+set loop_color_flows False
+set max_npoint_for_channel 0
+set default_unset_couplings 99
+set max_t_for_channel 99
+set zerowidth_tchannel True
+set nlo_mixed_expansion True
+import model sm
+define p = g u c d s u~ c~ d~ s~
+define j = g u c d s u~ c~ d~ s~
+define l+ = e+ mu+
+define l- = e- mu-
+define vl = ve vm vt
+define vl~ = ve~ vm~ vt~
+import model SMEFTsim_general_MwScheme_UFO
+define p = g u d s u~ d~ s~
+generate p p > c e+ e- NP==1 / h a z h1 z1 c~
+output /scratch/barbariczara/2026/mg5/C_{wils}/pp_cee/meja/pt=120
+Traceback (most recent call last):
+  File "/home/barbariczara/python3/lib/python3.7/shutil.py", line 566, in move
+    os.rename(src, real_dst)
+FileNotFoundError: [Errno 2] No such file or directory: '/scratch/barbariczara/2026/mg5/C_{wils}/pp_cee/meja/pt=120/Source/MODEL/param_card.dat' -> '/scratch/barbariczara/2026/mg5/C_{wils}/pp_cee/meja/pt=120/Cards/param_card_default.dat'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/barbariczara/tools/mg5_amc/madgraph/iolibs/files.py", line 189, in mv
+    shutil.move(path1, path2)
+  File "/home/barbariczara/python3/lib/python3.7/shutil.py", line 580, in move
+    copy_function(src, real_dst)
+  File "/home/barbariczara/python3/lib/python3.7/shutil.py", line 266, in copy2
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+  File "/home/barbariczara/python3/lib/python3.7/shutil.py", line 120, in copyfile
+    with open(src, 'rb') as fsrc:
+FileNotFoundError: [Errno 2] No such file or directory: '/scratch/barbariczara/2026/mg5/C_{wils}/pp_cee/meja/pt=120/Source/MODEL/param_card.dat'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/barbariczara/python3/lib/python3.7/shutil.py", line 566, in move
+    os.rename(src, real_dst)
+FileNotFoundError: [Errno 2] No such file or directory: '/scratch/barbariczara/2026/mg5/C_{wils}/pp_cee/meja/pt=120/Source/MODEL/param_card.dat' -> '/scratch/barbariczara/2026/mg5/C_{wils}/pp_cee/meja/pt=120/Cards/param_card_default.dat'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/barbariczara/tools/mg5_amc/madgraph/interface/extended_cmd.py", line 1548, in onecmd
+    return self.onecmd_orig(line, **opt)
+  File "/home/barbariczara/tools/mg5_amc/madgraph/interface/extended_cmd.py", line 1497, in onecmd_orig
+    return func(arg, **opt)
+  File "/home/barbariczara/tools/mg5_amc/madgraph/interface/master_interface.py", line 299, in do_output
+    self.cmd.do_output(self, line, *args, **opts)
+  File "/home/barbariczara/tools/mg5_amc/madgraph/interface/madgraph_interface.py", line 8444, in do_output
+    self.finalize(nojpeg, flaglist=flaglist)
+  File "/home/barbariczara/tools/mg5_amc/madgraph/interface/madgraph_interface.py", line 8822, in finalize
+    wanted_couplings)
+  File "/home/barbariczara/tools/mg5_amc/madgraph/iolibs/export_v4.py", line 4284, in convert_model
+    wanted_lorentz, wanted_couplings)
+  File "/home/barbariczara/tools/mg5_amc/madgraph/iolibs/export_v4.py", line 1093, in convert_model
+    self.make_model_symbolic_link()
+  File "/home/barbariczara/tools/mg5_amc/madgraph/iolibs/export_v4.py", line 725, in make_model_symbolic_link
+    mv(model_path + '/param_card.dat', self.dir_path + '/Cards/param_card_default.dat')
+  File "/home/barbariczara/tools/mg5_amc/madgraph/iolibs/files.py", line 194, in mv
+    shutil.move(path1, path2)
+  File "/home/barbariczara/python3/lib/python3.7/shutil.py", line 580, in move
+    copy_function(src, real_dst)
+  File "/home/barbariczara/python3/lib/python3.7/shutil.py", line 266, in copy2
+    copyfile(src, dst, follow_symlinks=follow_symlinks)
+  File "/home/barbariczara/python3/lib/python3.7/shutil.py", line 120, in copyfile
+    with open(src, 'rb') as fsrc:
+FileNotFoundError: [Errno 2] No such file or directory: '/scratch/barbariczara/2026/mg5/C_{wils}/pp_cee/meja/pt=120/Source/MODEL/param_card.dat'
+Related File: /scratch/barbariczara/2026/mg5/C_{wils}/pp_cee/meja/pt=120/Source/MODEL/param_card.dat
+                          MadGraph5_aMC@NLO Options    
+                          ----------------    
+        complex_mass_scheme 	:	False
+    default_unset_couplings 	:	99
+                      gauge 	:	unitary
+         group_subprocesses 	:	Auto
+  ignore_six_quark_processes 	:	False
+  include_lepton_initiated_processes 	:	False
+           loop_color_flows 	:	False
+      loop_optimized_output 	:	True
+  low_mem_multicore_nlo_generation 	:	False
+     max_npoint_for_channel 	:	0
+          max_t_for_channel 	:	99
+        nlo_mixed_expansion 	:	True
+               stdout_level 	:	20 (user set)
+         zerowidth_tchannel 	:	True
+
+                         MadEvent Options    
+                          ----------------    
+     automatic_html_opening 	:	False (user set)
+                    nb_core 	:	None
+        notification_center 	:	True
+                   run_mode 	:	2
+
+                      Configuration Options    
+                      ---------------------    
+                        OLP 	:	MadLoop
+   acknowledged_v3.1_syntax 	:	False
+         auto_convert_model 	:	True
+                auto_update 	:	7
+         cluster_local_path 	:	None
+           cluster_nb_retry 	:	1
+              cluster_queue 	:	None (user set)
+         cluster_retry_wait 	:	300
+               cluster_size 	:	100
+      cluster_status_update 	:	(600, 30)
+          cluster_temp_path 	:	None
+               cluster_type 	:	condor
+           cluster_walltime 	:	None (user set)
+                    collier 	:	./HEPTools/lib
+                contur_path 	:	./HEPTools/contur
+               cpp_compiler 	:	None
+             crash_on_error 	:	False
+               delphes_path 	:	/home/barbariczara/tools/delphes (user set)
+                      eMELA 	:	None (user set)
+                 eps_viewer 	:	None
+        exrootanalysis_path 	:	./ExRootAnalysis
+              f2py_compiler 	:	None
+          f2py_compiler_py2 	:	None
+          f2py_compiler_py3 	:	None
+                    fastjet 	:	None (user set)
+           fortran_compiler 	:	gfortran (user set)
+                      golem 	:	None (user set)
+                 hepmc_path 	:	/home/barbariczara/tools/mg5_amc/HEPTools/hepmc (user set)
+                  hwpp_path 	:	None (user set)
+                     lhapdf 	:	/home/barbariczara/tools/mg5_amc/HEPTools/lhapdf6_py3/bin/lhapdf-config (user set)
+                 lhapdf_py2 	:	None
+                 lhapdf_py3 	:	/home/barbariczara/tools/mg5_amc/HEPTools/lhapdf6_py3/bin/lhapdf-config (user set)
+          madanalysis5_path 	:	None (user set)
+           madanalysis_path 	:	./MadAnalysis
+  mg5amc_py8_interface_path 	:	/home/barbariczara/tools/mg5_amc/HEPTools/MG5aMC_PY8_interface (user set)
+                      ninja 	:	./HEPTools/lib
+        output_dependencies 	:	external
+                   pineappl 	:	pineappl
+            pythia-pgs_path 	:	./pythia-pgs
+               pythia8_path 	:	/home/barbariczara/tools/mg5_amc/HEPTools/pythia8 (user set)
+                 rivet_path 	:	./HEPTools/rivet
+                    samurai 	:	None
+               syscalc_path 	:	./SysCalc
+                    td_path 	:	./td
+                text_editor 	:	None
+                thepeg_path 	:	None (user set)
+                    timeout 	:	60
+                web_browser 	:	None
+                  yoda_path 	:	./HEPTools/yoda

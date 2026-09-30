@@ -6,7 +6,7 @@ main="/scratch/barbariczara/2026"
 
 mkdir -p "${main}/mg5/C_${wils}/pp_c~a/pt/C_${C}"
 
-for pt in $(seq 20 5 500); do
+for pt in $(seq 260 5 500); do
 	if [[ -d "${main}/mg5/C_${wils}/pp_c~a/pt/C_${C}/pt_${pt}" ]]; then
 		rm -r "${main}/mg5/C_${wils}/pp_c~a/pt/C_${C}/pt_${pt}"
 	fi

@@ -4,19 +4,43 @@ import os
 import re
 import glob
 
-
 ###ZA SPREMENITI:
 #Pot do mape s celotnim projektom
 main = "/scratch/barbariczara/2026"
-#Vrednost Wilsonovega koeficienta
-C=1
 #Pot do končne slike 
-fig_path = f"{main}/graphs/pt_photon_C_{C}.png"
+fig_path = f"{main}/graphs/pt_photon_C_1.png"
+# Pot do datoteke z rezultati
+result_file_path = f"{main}/results/pt_photon_C_1.dat"
+#Za katere Wilsonove koeficiente narišemo grafe. Možnosti: "eu", "lu", "qe", "lq1", "lq3", "lequ1", "lequ3", "uB", "uW"
+Wilson_coefficients = ["uW", "uB"]
+#Kateri delec nastane na koncu. Možnosti "electron" (proces p p > c e+ e-), "photon" (proces p p > c a)
+particle = "photon"
+#Za katero neodvsno spremenljivko narišemo grafe. Možnosti: "pt", "wils"
+variable = "pt"
+#Vrednost Wilsonovega koeficienta, v kolikor gre za proces p p > c a in nas zanima odvisnost od giabalne količine. Možnosti: 1, 0.1, 0.01
+pt_photon_C_value = 1
 
-#Izgled grafa
+if particle == "photon" and variable == "pt":
+    option = f"/C_{pt_photon_C_value}"
+else:
+    option = ""
+
+#Vrednosti koeficientov, ki jih uporabimo pri odvisnosti od gibalne količine (zgornje meje)
+pt_C_values = {
+    "eu": 0.0539771,
+    "lu": 0.0540114,
+    "qe": 0.0423928,
+    "lq1": 0.0503483,
+    "lq3": 0.0265658,
+    "lequ1": 0.0562678,
+    "lequ3": 0.0270081,
+    "uB": pt_photon_C_value,
+    "uW": pt_photon_C_value
+}
+
 colors1 = plt.cm.Set2(np.linspace(0, 1, 8))[2:]
 plt.rcParams.update({
-    "figure.figsize": (3, 2),
+    "figure.figsize": (3,2),
     "font.size": 10,
     "font.family": "serif",
     'text.usetex': True,
@@ -28,95 +52,147 @@ plt.rcParams.update({
     "savefig.bbox": "tight",
 })
 
-def sigma(filename):
+plt.figure()
+plt.yscale("log", base=10)
+plt.ylim((1e-4,1))
+
+if variable == "pt":
+    prefix = "pt"
+    xlabel = "$p_T$ [GeV]"
+elif variable == "wils":
+    prefix = "C"
+    xlabel = "$C$ [TeV$^{-2}$]"
+
+if particle == "electron":
+    proc = "ee"
+elif particle == "photon":
+    proc = "a"
+ 
+def get_xsec_mg5(filepath):
     """
-    Poišče datoteko z rezultati programa Madgraph in vrne sipalni presek (prvo število).
+    Vrne sipalni presek, za proces generiran s programom Madgraph.
+
+    Parametri
+    ---------
+    filepath: pot do datoteke results.dat, v kateri je shranjen sipalni presek
     """
 
     try:
-        with open(filename, "r") as f:
+        with open(filepath, "r") as f:
             line = f.readline()
         results = line.split()
-        sigma = float(results[0])
-        return sigma
+        xsec = float(results[0])
+        return xsec
 
     except FileNotFoundError:
-        print(f"FILE NOT FOUND: {filename}")
+        print(f"\nFILE NOT FOUND: {filepath}")
         return None
 
-def asymetry(file_sm, file_c, file_anti_c, c):
+def asymetry(wils, var_val, var_str, wils_value):
     """ 
     Izračuna asimetrijo med kvarkoma c in c~.
     
     Parametri
     ----------
-    file_sm : pot do datoteke results.dat s sipalnim presekom, ki jo ustvari Madgraph za proces v standardnem modelu
-    file_c : pot do datoteke results.dat s sipalnim presekom, ki jo ustvari Madgraph za proces s kvarkom c v SMEFT
-    file_c : pot do datoteke results.dat s sipalnim presekom, ki jo ustvari Madgraph za proces s kvarkom c~ v SMEFT
-    c : vrednosti Wilsonovega koeficienta, ki je bil nastavljen pri generaciji dogodkov
+    wils: kateri Wilsonov koeficient je vklopljena. Možnosti: "eu", "lu", "qe", "lq1", "lq3", "lequ1", "lequ3", "uB", "uW" \\
+    var_val : vrednost neodvisne spremenljivke (Wilsonovega koeficienta ali gibalne količine), na katero je bila ta nastavljena med generacijo dogodkov \\
+    var_str : vrednost neodvisne spremenljivke v string formatu (potrebno za pot do results.dat in .root datotek, da se ne izgubijo  končne decimalke enake 0)
     """
 
-    sigma_sm = sigma(file_sm)
-    sigma_c = sigma(file_c)
-    sigma_anti_c = sigma(file_anti_c)
+    # Poti do output mape, ki jo ustvari Madgraph
+    # Proces v standardnem modelu
+    if variable == "pt":
+        path_sm = f"{main}/mg5/SM/{variable}_{particle}/{prefix}_{var_str}"
+    elif variable == "wils":
+        path_sm = f"{main}/mg5/SM/{variable}_{particle}"
+    # Proces s kvarkom c v SMEFT
+    path_c  = f"{main}/mg5/C_{wils}/pp_c{proc}/{variable}{option}/{prefix}_{var_str}"
+    # Proces s kvarkom c v SMEFT
+    path_anti_c = f"{main}/mg5/C_{wils}/pp_c~{proc}/{variable}{option}/{prefix}_{var_str}"
 
-    if sigma_sm is None or sigma_c is None or sigma_anti_c is None:
+    xsec_sm = get_xsec_mg5(f"{path_sm}/SubProcesses/results.dat")
+    xsec_c = get_xsec_mg5(f"{path_c}/SubProcesses/results.dat")
+    xsec_anti_c = get_xsec_mg5(f"{path_anti_c}/SubProcesses/results.dat")
+
+    if xsec_sm is None or xsec_c is None or xsec_anti_c is None:
         return None
-
-    combined_sigma_c = sigma_sm + c**2 * sigma_c
-    combined_sigma_anti_c = sigma_sm + c**2 * sigma_anti_c
-
-    c_sum = combined_sigma_c + combined_sigma_anti_c
-    c_diff = combined_sigma_c - combined_sigma_anti_c
-
-    if c_sum == 0:
-        print(f"ZERO SUM OF CROSS SECTIONS: {file_c}")
-        return None
-
-    return c_diff / c_sum
-
-
-
-
-#Za vsak Wilsonov koeficient izračuna asimetrijo in nariše graf
-plt.gca().set_prop_cycle(color=colors1)
-for Wils in ["uW", "uB"]:
-
-    #Poišče mape oblike pt_*, kjer je * vrednost gibalen količine. To so mape, ki jih določimo kot output v Madgraph.
-    base_dir = f"{main}/mg5/C_{Wils}/pp_ca/pt/C_{C}"
-    folders = glob.glob(os.path.join(base_dir, "pt_*"))
     
-    #Vrednosti gibalne količine, pri katerih smo generirali dogodke.
-    pt_data = []
+    combined_xsec_c = xsec_sm + wils_value**2 * xsec_c
+    combined_xsec_anti_c = xsec_sm + wils_value**2 * xsec_anti_c
+
+    xsec_sum = combined_xsec_c + combined_xsec_anti_c
+    xsec_diff = combined_xsec_c - combined_xsec_anti_c
+
+    if xsec_sum == 0:
+        print(f"\nZERO SUM OF CROSS SECTIONS for Wilson coefficient C_{wils} at {variable} = {var_val}")
+        return None
+    asymetry_value = xsec_diff / xsec_sum
+
+    if result_file_path is not None:
+        with open(result_file_path, "a") as f:
+            f.write(
+                f"{var_val:<8}  {'SM':<5}{xsec_sm:<15.6g}\n"
+                f"{var_val:<8}  {'c':<5}{xsec_c:<15.6g}\n"
+                f"{var_val:<8}  {'c~':<5}{xsec_anti_c:<15.6g}{asymetry_value:.10g}\n"
+            )
+    return asymetry_value
+
+
+with open(result_file_path, "w") as f:
+    f.write("Results\n")
+
+plt.gca().set_prop_cycle(color=colors1)
+for wils in Wilson_coefficients:
+    print(f"Drawing graph for C_{wils}           ")
+    
+    with open(result_file_path, "a")as f:
+        f.write(f"--------------------\n C_{wils}\n -------------------\n")
+        f.write(f"{prefix:<8}| {'process':<8}| {'xsec':<15}| {'asymetry':<15}\n")
+
+    base_dir = f"{main}/mg5/C_{wils}/pp_c{proc}/{variable}{option}"
+
+    folders = glob.glob(os.path.join(base_dir, f"{prefix}_*"))
+
+    xaxis_data = []
     for folder in folders:
         name = os.path.basename(folder)
-        match = re.match(r"pt_([\d.]+)", name)
+        match = re.match(rf"{prefix}_([\d.]+)", name)
         if match:
-            pt_data.append((float(match.group(1)), match.group(1)))
-    pt_data.sort(key=lambda x: x[0]) 
-    pt_values = [pt[0] for pt in pt_data]   #Številčne vrednosti - za graf
-    pt_strings = [pt[1] for pt in pt_data]  #Besedilne vrednosti - za poti do result.dat datotek
+            xaxis_data.append((float(match.group(1)), match.group(1)))
 
+    xaxis_data.sort(key=lambda x: x[0]) 
+    xaxis_values = [x[0] for x in xaxis_data]   #Številčne vrednosti - za graf
+    xaxis_strings = [x[1] for x in xaxis_data]  #Besedilne vrednosti - za poti do result.dat datotek
+    
     #Izračunana asimetrija za vsako vrednost koeficienta
     asymetry_values = []
-    for pt_val, pt_str in zip(pt_values, pt_strings):
-        file_sm = f"{main}/mg5/SM/pt_photon/pt_{pt_str}/SubProcesses/results.dat"
-        file_c  = f"{main}/mg5/C_{Wils}/pp_ca/pt/C_{C}/pt_{pt_str}/SubProcesses/results.dat"
-        file_c_ = f"{main}/mg5/C_{Wils}/pp_c~a/pt/C_{C}/pt_{pt_str}/SubProcesses/results.dat"
-        asymetry_values.append(asymetry(file_sm, file_c, file_c_, C))
+
+    if variable == "wils":
+        for x_val, x_str in zip(xaxis_values, xaxis_strings):
+            print(f"\r\033[KCollecting data for {variable} = {x_str}", end="", flush=True)
+            C_value = x_val
+            asymetry_values.append(asymetry(wils, x_val, x_str, C_value))
+    elif variable == "pt":
+        C_value = pt_C_values[wils]
+        for x_val, x_str in zip(xaxis_values, xaxis_strings):
+            print(f"\r\033[KCollecting data for {variable} = {x_str}", end="", flush=True)
+            asymetry_values.append(asymetry(wils, x_val, x_str, C_value))
+    print(" ")
     asymetry_values = np.array(asymetry_values)
 
-    label = rf"$C_{{{Wils}}}$"
+    label = rf"$C_{{{wils}}}$"
+    if "1" in wils:
+        label = rf"$C_{{{wils[:-1]}}}^{{(1)}}$"
+    elif "3" in wils:
+        label = rf"$C_{{{wils[:-1]}}}^{{(3)}}$"
+    
+    plt.plot(xaxis_values, asymetry_values, label=label)
 
-    plt.plot(pt_values[:57], asymetry_values[:57], label=label)
 
-plt.yscale("log", base=10)
-
-plt.xlabel("$p_T$ [GeV]")                                                               
+plt.xlabel(xlabel)                                                               
 plt.ylabel(r"$\frac{\sigma_c - \sigma_{\bar{c}}}{\sigma_c + \sigma_{\bar{c}}}$")
-plt.xticks((0,50,100,150,200,250,300),("0","50","100","150","200","250","300"))
-plt.ylim((1e-1,1))
-plt.title(rf"$C={{{C}}}$")
 plt.legend()
-plt.savefig(fig_path)
+plt.savefig(fig_path)                              
 plt.show()
+
+print(f"Graph stored in: {fig_path}")
