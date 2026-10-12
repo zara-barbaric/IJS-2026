@@ -260,12 +260,12 @@ for wils in Wilson_coefficients:
     plt.plot(xaxis_values, asymetry_values, linestyle="--")
     plt.plot(xaxis_values, eff_asymetry_values, alpha=0.7, label=label)
 
-plt.plot([], [], color="black", linestyle="--", label="MadGraph")
-plt.plot([], [], color="black", label="MadGraph + Pythia + Delphes")
+plt.plot([], [], color="black", linestyle="--", label="MG5")
+plt.plot([], [], color="black", label="MG5 + Pythia"+"\n"+"+ Delphes")
 
 plt.xlabel(xlabel)                                                               
 plt.ylabel(r"$\frac{\sigma_c - \sigma_{\bar{c}}}{\sigma_c + \sigma_{\bar{c}}}$")
-plt.legend()
+plt.legend(ncol=2, loc="upper right")
 plt.savefig(fig_path)                              
 plt.show()
 

@@ -14,7 +14,7 @@ fig_path = f"{main}/graphs_complete/wils_electron_log_both.png"
 # Pot do datoteke z rezultati
 result_file_path = f"{main}/results_complete/wils_electron_log.dat"
 #Za katere Wilsonove koeficiente narišemo grafe. Možnosti: "eu", "lu", "qe", "lq1", "lq3", "lequ1", "lequ3", "uB", "uW"
-Wilson_coefficients = ["eu", "lu", "qe", "lq1", "lq3", "lequ1", "lequ3"]
+Wilson_coefficients = ["eu", "lequ1", "lequ3"]
 #Kateri delec nastane na koncu. Možnosti "electron" (proces p p > c e+ e-), "photon" (proces p p > c a)
 particle = "electron"
 #Za katero neodvsno spremenljivko narišemo grafe. Možnosti: "pt", "wils"
@@ -258,12 +258,12 @@ for wils in Wilson_coefficients:
     plt.plot(xaxis_values, asymetry_values, linestyle="--")
     plt.plot(xaxis_values, eff_asymetry_values, alpha=0.7, label=label)
 
-plt.plot([], [], color="black", linestyle="--", label="MadGraph5")
-plt.plot([], [], color="black", label="MadGraph5 + Pythia + Delphes")
+plt.plot([], [], color="black", linestyle="--", label="MG5")
+plt.plot([], [], color="black", label="MG5 + Pythia"+"\n"+"+ Delphes")
 
 plt.xlabel(xlabel)                                                               
 plt.ylabel(r"$\frac{\sigma_c - \sigma_{\bar{c}}}{\sigma_c + \sigma_{\bar{c}}}$")
-plt.legend()
+plt.legend(loc="lower right")
 plt.savefig(fig_path)                              
 plt.show()
 

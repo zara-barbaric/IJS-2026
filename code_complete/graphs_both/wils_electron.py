@@ -55,7 +55,7 @@ plt.rcParams.update({
 })
 
 plt.figure()
-plt.ylim((-0.05, 1))
+plt.ylim((-0.2, 1))
 
 if variable == "pt":
     prefix = "pt"
@@ -251,14 +251,14 @@ for wils in Wilson_coefficients:
     elif "3" in wils:
         label = rf"$C_{{{wils[:-1]}}}^{{(3)}}$"
     elif wils == "eu":
-        label = r"$C_{eu}$, $C_{lu}$, $C_{qe}$,"+"\n"+r"$C_{lq}^{(1)}$, $C_{lq}^{(3)}$"
+        label = r"$C_{eu}$, $C_{lu}$, $C_{qe}$, $C_{lq}^{(1)}$, $C_{lq}^{(3)}$"
         
     
     plt.plot(xaxis_values, asymetry_values, linestyle="--")
     plt.plot(xaxis_values, eff_asymetry_values, alpha=0.7, label=label)
 
-plt.plot([], [], color="black", linestyle="--", label="MadGraph5")
-plt.plot([], [], color="black", label="MadGraph5 + Pythia + Delphes")
+plt.plot([], [], color="black", linestyle="--", label="MG5")
+plt.plot([], [], color="black", label="MG5 + Pythia + Delphes")
 
 plt.xlabel(xlabel)                                                               
 plt.ylabel(r"$\frac{\sigma_c - \sigma_{\bar{c}}}{\sigma_c + \sigma_{\bar{c}}}$")
